@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <table class="table text-center">
+        <tr>
+            <th class="active text-center">Ville de depart</th>
+            <th class="active text-center">date depart</th>
+            <th class="active text-center">Heure depart</th>
+            <th class="active text-center">Ville d'arrivée</th>
+            <th class="active text-center">Date d'arrivée</th>
+            <th class="active text-center">Heure d'arrivée</th>
+            <th class="active text-center">Nombre de places</th>
+            <th class="active text-center">Nombre de places disponibles</th>
+            <th class="active text-center">Prix</th>
+            <th class="active text-center">Distance</th>
+        </tr>
+
+        {% for trajet in trajets %}
+            <tr>
+                <td><a href="{{ path('trajet.show', {id: trajet.id}) }}">{{ trajet.VilleDepart }}</a></td>
+                <td>
+                    <a href="{{ path('trajet.show', {id: trajet.id}) }}">
+                        {{ trajet.DateDepart|date("d/m/Y") }}
+                    </a>
+                </td>
+                <td>{{ trajet.HeureDepart|date("h:i:s") }}</td>
+                <td>{{ trajet.VilleArrive }}</td>
+                <td>{{ trajet.DateArrive|date("d/m/Y") }}</td>
+                <td>{{ trajet.HeureArrive|date("h:i:s") }}</td>
+                <td>{{ trajet.NbrePlace }}</td>
+                <td>{{ trajet.NbrePlaceDispo }}</td>
+                <td>{{ trajet.prix }}</td>
+                <td>{{ trajet.distance }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
