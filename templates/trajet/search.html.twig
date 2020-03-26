@@ -3,7 +3,7 @@
 {% block body %}
     <div class="form-group">
         <div class="col-sm-8">
-            <h1>Création d'annonce d'un trajet :</h1>
+            <h1>Recherche :</h1>
 
             {{ form_start(form) }}
             {{ form_widget(form) }}
@@ -11,8 +11,17 @@
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">Enregistrer</button>
+            <button type="submit" class="btn btn-primary">Rechercher</button>
         </div>
     </div>
     {{ form_end(form) }}
+
+    <div class="container">
+        <div class="grid">
+            {% for trajet in trajets %}
+                {% include 'trajet/traj.html.twig' with {trajet: trajet} only %}
+            {% endfor %}
+        </div>
+    </div>
+
 {% endblock %}

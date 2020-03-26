@@ -18,7 +18,9 @@ class TrajetType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('ville_depart', TextType::class)
+            ->add('ville_depart', TextType::class, [
+                'attr' => ['class' => 'tinymce'],
+            ])
             ->add('date_depart', DateType::class)
             ->add('heure_depart', TimeType::class)
             ->add('ville_arrive', TextType::class)
@@ -28,7 +30,7 @@ class TrajetType extends AbstractType
             ->add('nbre_place_dispo', NumberType::class)
             ->add('prix', NumberType::class)
             ->add('distance', NumberType::class)
-            ->add('date_ajout')
+        
             
         ;
     }

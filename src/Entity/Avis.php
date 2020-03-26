@@ -5,12 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
- * @ORM\Table(name="Comments")
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="App\Repository\CommentsRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\AvisRepository")
  */
-class Comments
+class Avis
 {
     /**
      * @ORM\Id()
@@ -20,7 +17,7 @@ class Comments
     private $id;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text")
      */
     private $commentaire;
 
@@ -30,12 +27,12 @@ class Comments
     private $date_ajout;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Utilisateur", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Utilisateur", inversedBy="avis")
      */
     private $utilisateur;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Trajet", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Trajet", inversedBy="avis")
      */
     private $trajet;
 
@@ -49,7 +46,7 @@ class Comments
         return $this->commentaire;
     }
 
-    public function setCommentaire(?string $commentaire): self
+    public function setCommentaire(string $commentaire): self
     {
         $this->commentaire = $commentaire;
 
@@ -90,12 +87,5 @@ class Comments
         $this->trajet = $trajet;
 
         return $this;
-    }
-        /**
-        * @ORM\PrePersist()
-        */
-    public function prePersist()
-    {
-        $this->date_ajout = new \DateTime();
     }
 }

@@ -13,6 +13,7 @@
             <th class="active text-center">Nombre de places disponibles</th>
             <th class="active text-center">Prix</th>
             <th class="active text-center">Distance</th>
+            <th colspan=2 class="active text-center">Actions</th>
         </tr>
 
         {% for trajet in trajets %}
@@ -31,6 +32,8 @@
                 <td>{{ trajet.NbrePlaceDispo }}</td>
                 <td>{{ trajet.prix }}</td>
                 <td>{{ trajet.distance }}</td>
+                <td><a href="{{ path('trajet.edit', {id: trajet.id}) }}"><button type="button" class="btn btn-primary glyphicon glyphicon-pencil"></button></a></td>
+                <td><a href="{{ path('trajet.delete', {id: trajet.id}) }}"><button type="button" class="btn btn-danger glyphicon glyphicon-trash"></button></a></td>
             </tr>
         {% endfor %}
     </table>
