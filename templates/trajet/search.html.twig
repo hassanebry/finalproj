@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="form-group">
+        <div class="col-sm-8">
+            <h1>Recherche :</h1>
+
+            {{ form_start(form, {attr: {class: 'filter'}}) }}
+            {{ form_widget(form) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+
+    <div class="container row">
+        <div class="grid col-md-12">
+            {% for trajet in trajets %}
+                {% include 'trajet/traj.html.twig' with {trajet: trajet} only %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

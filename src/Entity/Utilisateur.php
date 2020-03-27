@@ -68,11 +68,6 @@ class Utilisateur implements UserInterface
     private $date_inscription;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="utilisateur")
-     */
-    private $comments;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Reservation", mappedBy="utilisateur")
      */
     private $reservation;
@@ -82,11 +77,21 @@ class Utilisateur implements UserInterface
      */
     private $trajet;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Avis", mappedBy="utilisateur")
+     */
+    private $avis;
+
     public function __construct()
     {
-        $this->comments = new ArrayCollection();
         $this->reservation = new ArrayCollection();
         $this->trajet = new ArrayCollection();
+        $this->avis = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -203,37 +208,6 @@ class Utilisateur implements UserInterface
     }
 
     /**
-     * @return Collection|Comments[]
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(Comments $comment): self
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(Comments $comment): self
-    {
-        if ($this->comments->contains($comment)) {
-            $this->comments->removeElement($comment);
-            // set the owning side to null (unless already changed)
-            if ($comment->getUtilisateur() === $this) {
-                $comment->setUtilisateur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Reservation[]
      */
     public function getReservation(): Collection
@@ -313,5 +287,48 @@ class Utilisateur implements UserInterface
     }
         public function getSalt() {}
         public function getUsername() {}
-        public function eraseCredentials() {}    
+        public function eraseCredentials() {}
+
+        public function getEmail(): ?string
+        {
+            return $this->email;
+        }
+
+        public function setEmail(string $email): self
+        {
+            $this->email = $email;
+
+            return $this;
+        }
+
+        /**
+         * @return Collection|Avis[]
+         */
+        public function getAvis(): Collection
+        {
+            return $this->avis;
+        }
+
+        public function addAvi(Avis $avi): self
+        {
+            if (!$this->avis->contains($avi)) {
+                $this->avis[] = $avi;
+                $avi->setUtilisateur($this);
+            }
+
+            return $this;
+        }
+
+        public function removeAvi(Avis $avi): self
+        {
+            if ($this->avis->contains($avi)) {
+                $this->avis->removeElement($avi);
+                // set the owning side to null (unless already changed)
+                if ($avi->getUtilisateur() === $this) {
+                    $avi->setUtilisateur(null);
+                }
+            }
+
+            return $this;
+        }    
 }
