@@ -38,9 +38,9 @@ class Utilisateur implements UserInterface
     private $telephone;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="json")
      */
-    private $role;
+    private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -68,11 +68,6 @@ class Utilisateur implements UserInterface
     private $date_inscription;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Reservation", mappedBy="utilisateur")
-     */
-    private $reservation;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trajet", mappedBy="utilisateur")
      */
     private $trajet;
@@ -82,16 +77,10 @@ class Utilisateur implements UserInterface
      */
     private $email;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Avis", mappedBy="utilisateur")
-     */
-    private $avis;
-
     public function __construct()
     {
-        $this->reservation = new ArrayCollection();
         $this->trajet = new ArrayCollection();
-        $this->avis = new ArrayCollection();
+        $this->roles = ['ROLE_USER'];
     }
 
     public function getId(): ?int
@@ -135,15 +124,27 @@ class Utilisateur implements UserInterface
         return $this;
     }
 
-    public function getRole(): ?string
+    public function getRoles(): array
     {
-        return $this->role;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+        return array_unique($roles);
     }
 
-    public function setRole(string $role): self
+    public function setRoles(array $roles)
     {
-        $this->role = $role;
-
+        if (!in_array('ROLE_USER', $roles))
+        {
+            $roles[] = 'ROLE_USER';
+        }
+        foreach ($roles as $role)
+        {
+            if(substr($role, 0, 5) !== 'ROLE_') {
+                echo ("Chaque rôle doit commencer par 'ROLE_'");
+            }
+        }
+        $this->roles = $roles;
         return $this;
     }
 
@@ -208,37 +209,6 @@ class Utilisateur implements UserInterface
     }
 
     /**
-     * @return Collection|Reservation[]
-     */
-    public function getReservation(): Collection
-    {
-        return $this->reservation;
-    }
-
-    public function addReservation(Reservation $reservation): self
-    {
-        if (!$this->reservation->contains($reservation)) {
-            $this->reservation[] = $reservation;
-            $reservation->setUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReservation(Reservation $reservation): self
-    {
-        if ($this->reservation->contains($reservation)) {
-            $this->reservation->removeElement($reservation);
-            // set the owning side to null (unless already changed)
-            if ($reservation->getUtilisateur() === $this) {
-                $reservation->setUtilisateur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Trajet[]
      */
     public function getTrajet(): Collection
@@ -275,16 +245,6 @@ class Utilisateur implements UserInterface
         {
             $this->date_inscription = new \DateTime();
         }
-          /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
         public function getSalt() {}
         public function getUsername() {}
         public function eraseCredentials() {}
@@ -300,35 +260,4 @@ class Utilisateur implements UserInterface
 
             return $this;
         }
-
-        /**
-         * @return Collection|Avis[]
-         */
-        public function getAvis(): Collection
-        {
-            return $this->avis;
-        }
-
-        public function addAvi(Avis $avi): self
-        {
-            if (!$this->avis->contains($avi)) {
-                $this->avis[] = $avi;
-                $avi->setUtilisateur($this);
-            }
-
-            return $this;
-        }
-
-        public function removeAvi(Avis $avi): self
-        {
-            if ($this->avis->contains($avi)) {
-                $this->avis->removeElement($avi);
-                // set the owning side to null (unless already changed)
-                if ($avi->getUtilisateur() === $this) {
-                    $avi->setUtilisateur(null);
-                }
-            }
-
-            return $this;
-        }    
 }
