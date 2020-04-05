@@ -8,6 +8,7 @@ use App\Entity\TrajetSearch;
 use App\Entity\Utilisateur;
 use App\Form\TrajetSearchType;
 use App\Form\TrajetType;
+use App\Service\TrajetHistoryService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,31 +16,37 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+*@Route("/{_locale}/")
+*/
 class TrajetController extends AbstractController
 {
     /**
      * Lister tous les trajet.
-     * @Route("/trajet/", name="trajet.list")
+     * @Route("trajet/", name="trajet.list")
      * @return Response
      */
-    public function list() : Response
+    public function list(TrajetHistoryService $trajetHistoryService) : Response
     {
 
-        $trajets = $this->getDoctrine()->getRepository(Trajet::class)->findAll();
+		$trajets = $this->getDoctrine()->getRepository(Trajet::class)->findAll();
+		dump($trajetHistoryService->getTrajets());
         return $this->render('trajet/list.html.twig', [
-        'trajets' => $trajets,
+		'trajets' => $trajets,
+		'historyTrajets' => $trajetHistoryService->getTrajets(),
         ]);
     }
 
     /**
      * Chercher et afficher un trajet.
-     * @Route("/trajet/{id}", name="trajet.show", requirements={"id" = "\d+"})
+     * @Route("trajet/{id}", name="trajet.show", requirements={"id" = "\d+"})
      * @param Trajet $trajet
      * @return Response
      */
-    public function show(Trajet $trajet) : Response
+    public function show(Trajet $trajet, TrajetHistoryService $trajetHistoryService) : Response
     {
-    
+		$trajetHistoryService->addTrajet($trajet);
+		dump($trajetHistoryService->getTrajets());
         return $this->render('trajet/show.html.twig', [
         'trajet' => $trajet,
     ]);
@@ -47,7 +54,7 @@ class TrajetController extends AbstractController
 
 /**
 	* Créer un nouveau trajet.
-	* @Route("/nouveau-trajet", name="trajet.create")
+	* @Route("nouveau-trajet", name="trajet.create")
 	* @param Request $request
 	* @param EntityManagerInterface $em
 	* @return RedirectResponse|Response
@@ -116,7 +123,7 @@ class TrajetController extends AbstractController
 
 	/**
      * Lister les trajet depuis un champs.
-     * @Route("/trajet/search", name="trajet.search")
+     * @Route("trajet/search", name="trajet.search")
      * @return Response
      */
     public function search(TrajetRepository $repository, Request $request) 

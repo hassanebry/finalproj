@@ -36,17 +36,23 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
 	            <li class="nav-item">
-			        <a class="nav-link" href="{{ path('trajet.search') }}">Rechercher un trajet</a>
+			        <a class="nav-link" href="{{ path('trajet.search') }}">{{'trajet.rechercher'|trans }}</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('trajet.create') }}">Proposer un trajet <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ path('trajet.create') }}">{{'trajet.Proposer'|trans }} <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('utilisateur_new') }}">Inscription</a>
+                    <a class="nav-link" href="{{ path('utilisateur_new') }}">{{'user.ins'|trans }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/login">Connexion</a>
+                    <a class="nav-link" href="/login">{{'user.log'|trans }}</a>
                 </li>
+                
+                {% for key,locale in locales %}
+                    <li ><a href="{{ path(app.request.get('_route'),
+                        app.request.attributes.get('_route_params')|merge({'_locale': key})) }}">{{locale}}</a></li>
+                {% endfor %}
+               
       
             </ul>
         </div>

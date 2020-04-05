@@ -1,40 +1,32 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <table class="table text-center">
-        <tr>
-            <th class="active text-center">Ville de depart</th>
-            <th class="active text-center">date depart</th>
-            <th class="active text-center">Heure depart</th>
-            <th class="active text-center">Ville d'arrivée</th>
-            <th class="active text-center">Date d'arrivée</th>
-            <th class="active text-center">Heure d'arrivée</th>
-            <th class="active text-center">Nombre de places</th>
-            <th class="active text-center">Nombre de places disponibles</th>
-            <th class="active text-center">Prix</th>
-            <th class="active text-center">Distance</th>
-            <th colspan=2 class="active text-center">Actions</th>
-        </tr>
 
+        <h1>{{ 'list.titre'|trans }}</h1>
+ 
+            <div class="container row">
+                <div class="grid col-md-12">
         {% for trajet in trajets %}
-            <tr>
-                <td><a href="{{ path('trajet.show', {id: trajet.id}) }}">{{ trajet.VilleDepart }}</a></td>
-                <td>
-                    <a href="{{ path('trajet.show', {id: trajet.id}) }}">
-                        {{ trajet.DateDepart|date("d/m/Y") }}
-                    </a>
-                </td>
-                <td>{{ trajet.HeureDepart|date("h:i:s") }}</td>
-                <td>{{ trajet.VilleArrive }}</td>
-                <td>{{ trajet.DateArrive|date("d/m/Y") }}</td>
-                <td>{{ trajet.HeureArrive|date("h:i:s") }}</td>
-                <td>{{ trajet.NbrePlace }}</td>
-                <td>{{ trajet.NbrePlaceDispo }}</td>
-                <td>{{ trajet.prix }}</td>
-                <td>{{ trajet.distance }}</td>
-                <td><a href="{{ path('trajet.edit', {id: trajet.id}) }}"><button type="button" class="btn btn-primary glyphicon glyphicon-pencil"></button></a></td>
-                <td><a href="{{ path('trajet.delete', {id: trajet.id}) }}"><button type="button" class="btn btn-danger glyphicon glyphicon-trash"></button></a></td>
-            </tr>
+            
+                    <div class="card" style="width: 15rem;">
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{{ path('trajet.show', {id: trajet.id}) }}">{{'list.Depart'|trans}}: {{ trajet.VilleDepart }}</a></h5>
+                            <h5 class="card-title"><a href="{{ path('trajet.show', {id: trajet.id}) }}"> {{'list.Destination'|trans}}: {{ trajet.VilleArrive }}</a></h5>
+                            <p class="card-text">{{'list.le'|trans}} {{ trajet.DateDepart|date('d:m:y') }} {{'list.prep'|trans}} {{ trajet.HeureDepart|date('h:m:i') }}</p>
+                            <p class="card-text">{{'list.place'|trans}} {{ trajet.NbrePlace }}</p>
+                            <h5 class="card-title text-success" style="font-weight: bold; font-size: 1.5rem;">{{'list.Prix'|trans}}: {{ trajet.prix|number_format(0, ',', ' ') }} £</h5>
+                            <a href="#" class="btn btn-primary">{{'list.Reserver'|trans}}</a>
+                        </div>
+                    </div>
+                    <div>
+                        <p>   </p>
+                    </div>
+                
+
         {% endfor %}
-    </table>
+                </div>
+            </div>
+    
+
+
 {% endblock %}

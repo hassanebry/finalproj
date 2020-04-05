@@ -1,0 +1,23 @@
+trajet.Proposer: Offer a ride
+trajet.rechercher: Find a ride
+user.ins: Sign up
+user.log: Log in
+list.titre: Below the rides available
+list.Depart: From
+list.Destination: To
+list.place: Available seats
+list.le: The
+list.prep: at
+list.Prix: Price
+list.Reserver: Book
+search.title: Filter below to find your ride
+search.submit: Filter
+show.title: Details of the
+show.pub: Published the  
+show.depart: Departure
+show.arrive: Estimated arrival
+show.Conducteur: Driver
+show.list: Back to the rides
+show.edit: Edit
+create.title: Create a new ride proposal
+create.save: Save

@@ -1,0 +1,23 @@
+trajet.Proposer: Proposer un trajet
+trajet.rechercher: Rechercher un trajet
+user.ins: Inscription
+user.log: Connexion
+list.titre: Ci-dessous la liste des trajets disponibles
+list.Depart: Depart
+list.Destination: Destination
+list.place: Places disponibles
+list.le: Le
+list.prep: à
+list.Prix: Prix
+list.Reserver: Reserver
+search.title: Rechercher
+search.submit: filtrer
+show.title: Détails du trajet de
+show.pub: Publié le 
+show.depart: Heure de depart
+show.arrive: Heure d'arrivée
+show.Conducteur: Conducteur
+show.list: Liste des trajets
+show.edit: Éditer
+create.title: Création d'annonce d'un trajet
+create.save: Sauvegarder

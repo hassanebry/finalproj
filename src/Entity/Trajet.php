@@ -238,4 +238,8 @@ class Trajet
             $this->date_ajout = new \DateTime();
         }
 
+        public function __toString()
+    {
+        return $this->ville_depart;
+    }
 }
