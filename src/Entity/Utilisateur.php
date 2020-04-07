@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -77,10 +78,16 @@ class Utilisateur implements UserInterface
      */
     private $email;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Reservation", mappedBy="utilisateur")
+     */
+    private $reservations;
+
     public function __construct()
     {
         $this->trajet = new ArrayCollection();
-        $this->roles = ['ROLE_USER'];
+        $this->roles = ['ROLE_PASSAGER'];
+        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,16 +134,16 @@ class Utilisateur implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // guarantee every user at least has ROLE_PASSAGER
+        $roles[] = 'ROLE_PASSAGER';
         return array_unique($roles);
     }
 
     public function setRoles(array $roles)
     {
-        if (!in_array('ROLE_USER', $roles))
+        if (!in_array('ROLE_PASSAGER', $roles))
         {
-            $roles[] = 'ROLE_USER';
+            $roles[] = 'ROLE_PASSAGER';
         }
         foreach ($roles as $role)
         {
@@ -144,6 +151,7 @@ class Utilisateur implements UserInterface
                 echo ("Chaque rôle doit commencer par 'ROLE_'");
             }
         }
+        
         $this->roles = $roles;
         return $this;
     }
@@ -265,4 +273,36 @@ class Utilisateur implements UserInterface
     {
         return $this->nom;
     }
+
+        /**
+         * @return Collection|Reservation[]
+         */
+        public function getReservations(): Collection
+        {
+            return $this->reservations;
+        }
+
+        public function addReservation(Reservation $reservation): self
+        {
+            if (!$this->reservations->contains($reservation)) {
+                $this->reservations[] = $reservation;
+                $reservation->setUtilisateur($this);
+            }
+
+            return $this;
+        }
+
+        public function removeReservation(Reservation $reservation): self
+        {
+            if ($this->reservations->contains($reservation)) {
+                $this->reservations->removeElement($reservation);
+                // set the owning side to null (unless already changed)
+                if ($reservation->getUtilisateur() === $this) {
+                    $reservation->setUtilisateur(null);
+                }
+            }
+
+            return $this;
+        }
+
 }

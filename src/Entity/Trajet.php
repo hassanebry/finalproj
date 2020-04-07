@@ -81,6 +81,16 @@ class Trajet
      */
     private $utilisateur;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Reservation", mappedBy="trajet")
+     */
+    private $reservations;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -242,4 +252,35 @@ class Trajet
     {
         return $this->ville_depart;
     }
+
+        /**
+         * @return Collection|Reservation[]
+         */
+        public function getReservations(): Collection
+        {
+            return $this->reservations;
+        }
+
+        public function addReservation(Reservation $reservation): self
+        {
+            if (!$this->reservations->contains($reservation)) {
+                $this->reservations[] = $reservation;
+                $reservation->setTrajet($this);
+            }
+
+            return $this;
+        }
+
+        public function removeReservation(Reservation $reservation): self
+        {
+            if ($this->reservations->contains($reservation)) {
+                $this->reservations->removeElement($reservation);
+                // set the owning side to null (unless already changed)
+                if ($reservation->getTrajet() === $this) {
+                    $reservation->setTrajet(null);
+                }
+            }
+
+            return $this;
+        }
 }

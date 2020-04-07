@@ -15,6 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 /**
 *@Route("/{_locale}/")
@@ -52,12 +55,13 @@ class TrajetController extends AbstractController
     ]);
 }
 
-/**
+	/**
 	* Créer un nouveau trajet.
 	* @Route("nouveau-trajet", name="trajet.create")
 	* @param Request $request
 	* @param EntityManagerInterface $em
 	* @return RedirectResponse|Response
+	* @IsGranted("ROLE_CONDUCTEUR")
 	*/
 	public function create(Request $request, EntityManagerInterface $em) : Response
 	{
