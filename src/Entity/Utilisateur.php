@@ -86,7 +86,7 @@ class Utilisateur implements UserInterface
     public function __construct()
     {
         $this->trajet = new ArrayCollection();
-        $this->roles = ['ROLE_PASSAGER'];
+        $this->roles = ['ROLE_USER'];
         $this->reservations = new ArrayCollection();
     }
 
@@ -134,16 +134,16 @@ class Utilisateur implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_PASSAGER
-        $roles[] = 'ROLE_PASSAGER';
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
         return array_unique($roles);
     }
 
     public function setRoles(array $roles)
     {
-        if (!in_array('ROLE_PASSAGER', $roles))
+        if (!in_array('ROLE_USER', $roles))
         {
-            $roles[] = 'ROLE_PASSAGER';
+            $roles[] = 'ROLE_USER';
         }
         foreach ($roles as $role)
         {

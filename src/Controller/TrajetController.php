@@ -61,7 +61,6 @@ class TrajetController extends AbstractController
 	* @param Request $request
 	* @param EntityManagerInterface $em
 	* @return RedirectResponse|Response
-	* @IsGranted("ROLE_CONDUCTEUR")
 	*/
 	public function create(Request $request, EntityManagerInterface $em) : Response
 	{
@@ -145,6 +144,20 @@ class TrajetController extends AbstractController
 		
 		
 		
+	}
+	
+	/**
+     * Lister les trajets d'un user.
+     * @Route("trajet/mestrajets", name="trajet.malist")
+     * @return Response
+     */
+    public function malist() : Response
+    {
+        $user = $this->getUser();
+		$trajets = $this->getDoctrine()->getRepository(Trajet::class)->findby(['utilisateur' => $user]);
+        return $this->render('trajet/malist.html.twig', [
+		'trajets' => $trajets,
+        ]);
     }
 
 }

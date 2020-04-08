@@ -34,7 +34,7 @@ class ReservationController extends AbstractController
         $place_reserv = $reservation->getNbrePlace();
         $trajet->setNbrePlace($place_dispo - $place_reserv);
 		$em->flush();
-		#return $this->redirectToRoute('reservation/show.html.twig');
+		return $this->redirectToRoute('reservation1.list');
 	}
 		return $this->render('reservation/create.html.twig', [
         'form' => $form->createView(),
@@ -45,7 +45,7 @@ class ReservationController extends AbstractController
 
     /**
      * Lister les reservations d'un user.
-     * @Route("reservation/", name="reservation.list")
+     * @Route("reservation/mesreservations", name="reservation.list")
      * @return Response
      */
     public function list() : Response
@@ -56,4 +56,64 @@ class ReservationController extends AbstractController
 		'reservations' => $reservations,
         ]);
     }
+
+    /**
+     * Lister les reservations d'un user.
+     * @Route("reservation/mesreservations1", name="reservation1.list")
+     * @return Response
+     */
+    public function list1() : Response
+    {
+        $user = $this->getUser();
+		$reservations = $this->getDoctrine()->getRepository(Reservation::class)->findby(['utilisateur' => $user]);
+        return $this->render('reservation/list1.html.twig', [
+		'reservations' => $reservations,
+        ]);
+    }
+
+    /**
+	 * Éditer une reservation.
+	 * @Route("reservation/{id}/edit", name="reservation.edit", requirements={"id" = "\d+"})
+	 * @param Request $request
+	 * @param EntityManagerInterface $em
+	 * @return RedirectResponse|Response
+	*/
+	public function edit(Request $request, Reservation $reservation, EntityManagerInterface $em) : Response
+	{
+		$form = $this->createForm(ReservationType::class, $reservation);
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+		$em->flush();
+		return $this->redirectToRoute('reservation.list');
+		}
+		return $this->render('trajet/create.html.twig', [
+		'form' => $form->createView(),
+		]);
+    }
+    
+    /**
+	* Supprimer une reservation.
+	* @Route("reservation/{id}/delete", name="reservation.delete", requirements={"id" = "\d+"})
+	* @param Request $request
+	* @param Reservation $reservation
+	* @param EntityManagerInterface $em
+	* @return Response
+	*/
+	public function delete(Request $request, Reservation $reservation, EntityManagerInterface $em) : Response
+	{
+	$form = $this->createFormBuilder()
+	->setAction($this->generateUrl('reservation.delete', ['id' => $reservation->getId()]))
+	->getForm();
+	$form->handleRequest($request);
+	if ( ! $form->isSubmitted() || ! $form->isValid()) {
+	return $this->render('reservation/delete.html.twig', [
+	'reservation' => $reservation,
+	'form' => $form->createView(),
+	]);
+	}
+	$em = $this->getDoctrine()->getManager();
+	$em->remove($reservation);
+	$em->flush();
+	return $this->redirectToRoute('reservation.list');
+	}
 }

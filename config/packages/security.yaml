@@ -37,6 +37,5 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
     
     role_hierarchy:
-        ROLE_PASSAGER: ROLE_USER
-        ROLE_CONDUCTEUR: ROLE_PASSAGER
-        ROLE_ADMIN: ROLE_CONDUCTEUR
+        ROLE_USER: ROLE_USER
+        ROLE_ADMIN: ROLE_USER

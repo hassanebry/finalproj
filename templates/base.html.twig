@@ -41,12 +41,22 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ path('trajet.create') }}">{{'trajet.Proposer'|trans }} <span class="sr-only">(current)</span></a>
                 </li>
+
+                {% if is_granted('ROLE_USER') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('trajet.malist') }}">Mes trajets</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('reservation.list') }}">Mes reservations</a>
+                </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('utilisateur_new') }}">{{'user.ins'|trans }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/login">{{'user.log'|trans }}</a>
                 </li>
+                
                 
                 {% for key,locale in locales %}
                     <li ><a href="{{ path(app.request.get('_route'),
