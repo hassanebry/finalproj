@@ -15,9 +15,9 @@
                             <p class="card-text">{{'list.le'|trans}} {{ reservation.trajet.DateDepart|date('d:m:y') }} {{'list.prep'|trans}} {{ reservation.trajet.HeureDepart|date('h:m:i') }}</p>
                             <p class="card-text">{{'list.place'|trans}} {{ reservation.trajet.NbrePlace }}</p>
                             <h5 class="card-title text-success" style="font-weight: bold; font-size: 1.5rem;">{{'list.Prix'|trans}}: {{ reservation.trajet.prix|number_format(0, ',', ' ') }} £</h5>
-                            <h5 class="card-title text-success" style="font-weight: bold; font-size: 1.5rem;">Reservé le : {{ reservation.dateReserv|date('d:m:y') }}</h5>                      
-                            <a href = "{{ path('reservation.edit', {id: reservation.id}) }}"><button type="button" class="btn btn-primary">Editer</button></a>
-                            <a href = "{{ path('reservation.delete', {id: reservation.id}) }}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+                            <h5 class="card-title text-success" style="font-weight: bold; font-size: 1.5rem;">{{('reserver.date'|trans)}} : {{ reservation.dateReserv|date('d:m:y') }}</h5>                      
+                            <a href = "{{ path('reservation.edit', {id: reservation.id}) }}"><button type="button" class="btn btn-primary">{{('reserver.edit'|trans)}}</button></a>
+                            <a href = "{{ path('reservation.delete', {id: reservation.id}) }}"><button type="button" class="btn btn-danger">{{('reserver.del'|trans)}}</button></a>
                         </div>
                     </div>
                     <div>

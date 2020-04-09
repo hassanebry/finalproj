@@ -21,3 +21,11 @@ show.list: Back to the rides
 show.edit: Edit
 create.title: Create a new ride proposal
 create.save: Save
+user.newtitle: Subscription
+user.title2: Fill in the form below
+user.back: Back to Login
+reserver.date: booked for the
+reserver.title: Booking
+Reserver.submit: Booking
+reserver.edit: Modify
+reserver.del: Delete

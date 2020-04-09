@@ -11,8 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+
 /**
- * @Route("/utilisateur")
+ * @Route("/{_locale}/utilisateur")
  */
 class UtilisateurController extends AbstractController
 {
@@ -49,7 +50,7 @@ class UtilisateurController extends AbstractController
             $entityManager->persist($utilisateur);
             $entityManager->flush();
 
-            return $this->redirectToRoute('utilisateur_index');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('utilisateur/new.html.twig', [
@@ -79,7 +80,7 @@ class UtilisateurController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('utilisateur_index');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('utilisateur/edit.html.twig', [
@@ -99,6 +100,6 @@ class UtilisateurController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('utilisateur_index');
+        return $this->redirectToRoute('app_login');
     }
 }

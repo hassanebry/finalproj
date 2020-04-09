@@ -50,12 +50,24 @@
                     <a class="nav-link" href="{{ path('reservation.list') }}">Mes reservations</a>
                 </li>
                 {% endif %}
+
+                {% if is_granted('ROLE_USER') %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('utilisateur_new') }}">{{'user.ins'|trans }}</a>
                 </li>
+                {% endif %}
+                
+                {% if is_granted('ROLE_USER') %}
                 <li class="nav-item">
                     <a class="nav-link" href="/login">{{'user.log'|trans }}</a>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Deconnexion</a>
+                </li>
+                {% endif %}
+
+
                 
                 
                 {% for key,locale in locales %}

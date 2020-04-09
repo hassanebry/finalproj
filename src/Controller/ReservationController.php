@@ -12,6 +12,10 @@ use App\Entity\Trajet;
 use App\Entity\Utilisateur;
 use App\Form\ReservationType;
 
+
+/**
+ * @Route("/{_locale}/reservaion/")
+ */
 class ReservationController extends AbstractController
 {
     /**
@@ -45,7 +49,7 @@ class ReservationController extends AbstractController
 
     /**
      * Lister les reservations d'un user.
-     * @Route("reservation/mesreservations", name="reservation.list")
+     * @Route("mesreservations", name="reservation.list")
      * @return Response
      */
     public function list() : Response
@@ -59,7 +63,7 @@ class ReservationController extends AbstractController
 
     /**
      * Lister les reservations d'un user.
-     * @Route("reservation/mesreservations1", name="reservation1.list")
+     * @Route("mesreservations1", name="reservation1.list")
      * @return Response
      */
     public function list1() : Response
@@ -73,7 +77,7 @@ class ReservationController extends AbstractController
 
     /**
 	 * Éditer une reservation.
-	 * @Route("reservation/{id}/edit", name="reservation.edit", requirements={"id" = "\d+"})
+	 * @Route("{id}/edit", name="reservation.edit", requirements={"id" = "\d+"})
 	 * @param Request $request
 	 * @param EntityManagerInterface $em
 	 * @return RedirectResponse|Response
@@ -93,7 +97,7 @@ class ReservationController extends AbstractController
     
     /**
 	* Supprimer une reservation.
-	* @Route("reservation/{id}/delete", name="reservation.delete", requirements={"id" = "\d+"})
+	* @Route("{id}/delete", name="reservation.delete", requirements={"id" = "\d+"})
 	* @param Request $request
 	* @param Reservation $reservation
 	* @param EntityManagerInterface $em

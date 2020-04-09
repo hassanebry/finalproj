@@ -21,3 +21,11 @@ show.list: Liste des trajets
 show.edit: Éditer
 create.title: Création d'annonce d'un trajet
 create.save: Sauvegarder
+user.newtitle: Inscription
+user.title2: Renseignez le formulaire en dessous
+user.back: S'authentifier
+reserver.date: Reservé le
+reserver.title: Reservation
+Reserver.submit: Réservé
+reserver.edit: Modifier
+reserver.del: Supprimer

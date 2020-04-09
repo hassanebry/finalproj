@@ -240,7 +240,7 @@ class Trajet
         return $this;
     }
 
-    /**
+        /**
         * @ORM\PrePersist()
         */
         public function prePersist()

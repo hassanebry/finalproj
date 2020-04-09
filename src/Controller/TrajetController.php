@@ -57,7 +57,7 @@ class TrajetController extends AbstractController
 
 	/**
 	* Créer un nouveau trajet.
-	* @Route("nouveau-trajet", name="trajet.create")
+	* @Route("trajet/nouveau-trajet", name="trajet.create")
 	* @param Request $request
 	* @param EntityManagerInterface $em
 	* @return RedirectResponse|Response

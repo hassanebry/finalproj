@@ -14,10 +14,6 @@ class ReservationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date_reserv',  DateType::class, [
-                'required' => false,
-                'label' => false 
-            ])
             ->add('nbre_place', NumberType::class, [
                 'required' => false,
                 'label' => false,

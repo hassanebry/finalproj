@@ -5,6 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Entity()
+ * @ORM\Table(name="Reservation")
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="App\Repository\ReservationRepository")
  */
 class Reservation
@@ -88,4 +91,12 @@ class Reservation
 
         return $this;
     }
+
+        /**
+        * @ORM\PrePersist()
+        */
+        public function prePersist()
+        {
+            $this->date_reserv = new \DateTime();
+        }
 }

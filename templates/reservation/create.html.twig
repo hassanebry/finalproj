@@ -3,17 +3,32 @@
 {% block body %}
     <div class="form-group">
         <div class="col-sm-8">
-            <h1>Reservation :</h1>
+            <h1>{{('reserver.title'|trans)}} :</h1>
 
             {{ form_start(form, {attr: {class: 'filter'}}) }}
-            {{ form_widget(form) }}
+            <div class="container row">
+                <div class="grid col-md-12">
+                    <div class="card" style="width: 20rem;">
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{{ path('trajet.show', {id: trajet.id}) }}">{{'list.Depart'|trans}}: {{ trajet.VilleDepart }}</a></h5>
+                            <h5 class="card-title"><a href="{{ path('trajet.show', {id: trajet.id}) }}"> {{'list.Destination'|trans}}: {{ trajet.VilleArrive }}</a></h5>
+                            <p class="card-text">{{'list.le'|trans}} {{ trajet.DateDepart|date('d:m:y') }} {{'list.prep'|trans}} {{ trajet.HeureDepart|date('h:m:i') }}</p>
+                            <p class="card-text">{{'list.place'|trans}} {{ trajet.NbrePlace }}</p>
+                            <h5 class="card-title text-success" style="font-weight: bold; font-size: 1.5rem;">{{'list.Prix'|trans}}: {{ trajet.prix|number_format(0, ',', ' ') }} £</h5>
+                            {{ form_widget(form) }}
+                            <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-10">
+                                    <button type="submit" class="btn btn-primary">{{('Reserver.submit'|trans)}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-primary">Reserver</button>
-        </div>
-    </div>
+    
     {{ form_end(form) }}
 
 {% endblock %}
