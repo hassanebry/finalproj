@@ -50,28 +50,44 @@ class TrajetRepository extends ServiceEntityRepository
                 if (!empty($search->getDepart())){
                     $query = $query
                             ->andWhere('t.ville_depart LIKE :depart')
-                            ->setParameter('depart', "%{$search->getDepart()}%");
+                            ->setParameter('depart', "%{$search->getDepart()}%")
+                            ;
                 }
 
                 if (!empty($search->getArrive())){
                     $query = $query
                             ->andWhere('t.ville_arrive LIKE :arrive')
-                            ->setParameter('arrive', "%{$search->getArrive()}%");
+                            ->setParameter('arrive', "%{$search->getArrive()}%")
+                            ;
                 }
 
                 if (!empty($search->datedep)){
                     $query = $query
                             ->andWhere('t.date_depart = :datedep')
-                            ->setParameter('datedep', $search->datedep);
+                            ->setParameter('datedep', $search->datedep)
+                            ;
                 }
 
                 if (!empty($search->getPlace())){
                     $query = $query
                             ->andWhere('t.nbre_place >= :place')
-                            ->setParameter('place', $search->getPlace());
+                            ->setParameter('place', $search->getPlace())
+                            ;
                 }
 
         return $query->getQuery()->getResult();
+    }
+
+    /**
+    * @return Trajet[]
+    */
+    public function getTrajetsNonExpires()
+    {
+    $qb = $this->createQueryBuilder('t')
+                ->where('t.nbre_place > :nbreplace')
+                ->setParameter('nbreplace', 0)
+                ->orderBy('t.date_depart', 'DESC');
+        return $qb->getQuery()->getResult();
     }
     
 

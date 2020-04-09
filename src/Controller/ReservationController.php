@@ -35,8 +35,12 @@ class ReservationController extends AbstractController
         $reservation->setUtilisateur($this->getUser());
         $reservation->setTrajet($trajet);
         $place_dispo = $trajet->getNbrePlace();
-        $place_reserv = $reservation->getNbrePlace();
-        $trajet->setNbrePlace($place_dispo - $place_reserv);
+		$place_reserv = $reservation->getNbrePlace();
+		if ($place_dispo > $place_reserv){
+			$trajet->setNbrePlace($place_dispo - $place_reserv);
+		}else{
+			return $this->redirectToRoute('trajet.search');
+		}
 		$em->flush();
 		return $this->redirectToRoute('reservation1.list');
 	}

@@ -29,10 +29,10 @@ class TrajetController extends AbstractController
      * @Route("trajet/", name="trajet.list")
      * @return Response
      */
-    public function list(TrajetHistoryService $trajetHistoryService) : Response
+    public function list(TrajetHistoryService $trajetHistoryService, TrajetRepository $repo) : Response
     {
 
-		$trajets = $this->getDoctrine()->getRepository(Trajet::class)->findAll();
+		$trajets = $repo->getTrajetsNonExpires();
 		dump($trajetHistoryService->getTrajets());
         return $this->render('trajet/list.html.twig', [
 		'trajets' => $trajets,
