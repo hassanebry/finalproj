@@ -13,8 +13,8 @@
             <li><strong>Reservé pour le : </strong>{{ reservation.DateReserv|date('m/d/Y') }}</li>
         </ul>
     </div>
-    <div class="collapse navbar-collapse">
-    {{ form_start(form, {'attr': {'class': 'navbar-form navbar-left'}}) }}
+    <div>
+    {{ form_start(form)}}
     {{ form_widget(form) }}
         <a href="{{ path('reservation.list') }}" class="btn btn-success" role="button">Annuler</a>
         <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes vous sûr ??')">

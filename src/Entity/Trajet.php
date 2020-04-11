@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity()
@@ -77,6 +78,13 @@ class Trajet
     private $date_ajout;
 
     /**
+     * @var string
+     * @Gedmo\Slug(fields={"ville_depart"})
+     * @ORM\Column(type="string", length=128, unique=true)
+    */
+    private $slug;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Utilisateur", inversedBy="trajet")
      */
     private $utilisateur;
@@ -86,9 +94,15 @@ class Trajet
      */
     private $reservations;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Commentaire", mappedBy="trajet")
+     */
+    private $commentaires;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -278,6 +292,53 @@ class Trajet
                 // set the owning side to null (unless already changed)
                 if ($reservation->getTrajet() === $this) {
                     $reservation->setTrajet(null);
+                }
+            }
+
+            return $this;
+        }
+
+        /**
+         * @return string|null
+        */
+        public function getSlug() : ?string
+        {
+            return $this->slug;
+        }
+
+        /**
+         * @param string $slug
+        */
+        public function setSlug(string $slug): void
+        {
+        $this->slug = $slug;
+        }
+
+        /**
+         * @return Collection|Commentaire[]
+         */
+        public function getCommentaires(): Collection
+        {
+            return $this->commentaires;
+        }
+
+        public function addCommentaire(Commentaire $commentaire): self
+        {
+            if (!$this->commentaires->contains($commentaire)) {
+                $this->commentaires[] = $commentaire;
+                $commentaire->setTrajet($this);
+            }
+
+            return $this;
+        }
+
+        public function removeCommentaire(Commentaire $commentaire): self
+        {
+            if ($this->commentaires->contains($commentaire)) {
+                $this->commentaires->removeElement($commentaire);
+                // set the owning side to null (unless already changed)
+                if ($commentaire->getTrajet() === $this) {
+                    $commentaire->setTrajet(null);
                 }
             }
 

@@ -83,11 +83,17 @@ class Utilisateur implements UserInterface
      */
     private $reservations;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Commentaire", mappedBy="utilisateur")
+     */
+    private $commentaires;
+
     public function __construct()
     {
         $this->trajet = new ArrayCollection();
         $this->roles = ['ROLE_USER'];
         $this->reservations = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -299,6 +305,37 @@ class Utilisateur implements UserInterface
                 // set the owning side to null (unless already changed)
                 if ($reservation->getUtilisateur() === $this) {
                     $reservation->setUtilisateur(null);
+                }
+            }
+
+            return $this;
+        }
+
+        /**
+         * @return Collection|Commentaire[]
+         */
+        public function getCommentaires(): Collection
+        {
+            return $this->commentaires;
+        }
+
+        public function addCommentaire(Commentaire $commentaire): self
+        {
+            if (!$this->commentaires->contains($commentaire)) {
+                $this->commentaires[] = $commentaire;
+                $commentaire->setUtilisateur($this);
+            }
+
+            return $this;
+        }
+
+        public function removeCommentaire(Commentaire $commentaire): self
+        {
+            if ($this->commentaires->contains($commentaire)) {
+                $this->commentaires->removeElement($commentaire);
+                // set the owning side to null (unless already changed)
+                if ($commentaire->getUtilisateur() === $this) {
+                    $commentaire->setUtilisateur(null);
                 }
             }
 

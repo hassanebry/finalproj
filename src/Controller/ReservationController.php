@@ -20,7 +20,7 @@ class ReservationController extends AbstractController
 {
     /**
 	* Effectuer une reservation.
-	* @Route("new-reservation/{id}", name="reservation.create", requirements={"id" = "\d+"})
+	* @Route("new-reservation/{slug}", name="reservation.create", requirements={"slug" = "[a-zA-Z]+"})
 	* @param Request $request
 	* @param EntityManagerInterface $em
 	* @return RedirectResponse|Response
@@ -36,10 +36,10 @@ class ReservationController extends AbstractController
         $reservation->setTrajet($trajet);
         $place_dispo = $trajet->getNbrePlace();
 		$place_reserv = $reservation->getNbrePlace();
-		if ($place_dispo > $place_reserv){
+		if ($place_dispo > $place_reserv || $place_dispo == $place_reserv){
 			$trajet->setNbrePlace($place_dispo - $place_reserv);
 		}else{
-			return $this->redirectToRoute('trajet.search');
+			return $this->redirectToRoute('reservation.error');
 		}
 		$em->flush();
 		return $this->redirectToRoute('reservation1.list');
@@ -49,6 +49,16 @@ class ReservationController extends AbstractController
         'trajet' => $trajet,
         'reservation' => $reservation,
 		]);
+	}
+	
+	/**
+     * Afficher un message derreur.
+     * @Route("error", name="reservation.error")
+     * @return Response
+     */
+    public function error_reserv() : Response
+    {
+        return $this->render('reservation/noreserv.html.twig');
     }
 
     /**
@@ -94,7 +104,7 @@ class ReservationController extends AbstractController
 		$em->flush();
 		return $this->redirectToRoute('reservation.list');
 		}
-		return $this->render('trajet/create.html.twig', [
+		return $this->render('reservation/edit.html.twig', [
 		'form' => $form->createView(),
 		]);
     }

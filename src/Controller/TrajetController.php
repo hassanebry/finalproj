@@ -19,6 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
+
 /**
 *@Route("/{_locale}/")
 */
@@ -40,20 +41,6 @@ class TrajetController extends AbstractController
         ]);
     }
 
-    /**
-     * Chercher et afficher un trajet.
-     * @Route("trajet/{id}", name="trajet.show", requirements={"id" = "\d+"})
-     * @param Trajet $trajet
-     * @return Response
-     */
-    public function show(Trajet $trajet, TrajetHistoryService $trajetHistoryService) : Response
-    {
-		$trajetHistoryService->addTrajet($trajet);
-		dump($trajetHistoryService->getTrajets());
-        return $this->render('trajet/show.html.twig', [
-        'trajet' => $trajet,
-    ]);
-}
 
 	/**
 	* Créer un nouveau trajet.
@@ -80,7 +67,7 @@ class TrajetController extends AbstractController
     
     /**
 	 * Éditer un trajet.
-	 * @Route("trajet/{id}/edit", name="trajet.edit", requirements={"id" = "\d+"})
+	 * @Route("trajet/{slug}/edit", name="trajet.edit", requirements = {"slug": "[a-zA-Z]+"})
 	 * @param Request $request
 	 * @param EntityManagerInterface $em
 	 * @return RedirectResponse|Response
@@ -100,7 +87,7 @@ class TrajetController extends AbstractController
 
     /**
 	* Supprimer un trajet.
-	* @Route("trajet/{id}/delete", name="trajet.delete", requirements={"id" = "\d+"})
+	* @Route("trajet/{slug}/delete", name="trajet.delete", requirements = {"slug": "[a-zA-Z]+"})
 	* @param Request $request
 	* @param trajet $trajet
 	* @param EntityManagerInterface $em
@@ -109,7 +96,7 @@ class TrajetController extends AbstractController
 	public function delete(Request $request, Trajet $trajet, EntityManagerInterface $em) : Response
 	{
 	$form = $this->createFormBuilder()
-	->setAction($this->generateUrl('trajet.delete', ['id' => $trajet->getId()]))
+	->setAction($this->generateUrl('trajet.delete', ['slug' => $trajet->getSlug()]))
 	->getForm();
 	$form->handleRequest($request);
 	if ( ! $form->isSubmitted() || ! $form->isValid()) {
@@ -140,10 +127,6 @@ class TrajetController extends AbstractController
 		'trajets' => $trajets,
 		'form' => $form->createView()
 		]);
-
-		
-		
-		
 	}
 	
 	/**
@@ -158,6 +141,21 @@ class TrajetController extends AbstractController
         return $this->render('trajet/malist.html.twig', [
 		'trajets' => $trajets,
         ]);
-    }
+	}
+	
+	    /**
+     * Chercher et afficher un trajet.
+     * @Route("trajet/{slug}", name="trajet.show", requirements = {"slug": "[a-zA-Z]+"})
+     * @param Trajet $trajet
+     * @return Response
+     */
+    public function show(Trajet $trajet, TrajetHistoryService $trajetHistoryService) : Response
+    {
+		$trajetHistoryService->addTrajet($trajet);
+		dump($trajetHistoryService->getTrajets());
+        return $this->render('trajet/show.html.twig', [
+        'trajet' => $trajet,
+    ]);
+	}
 
 }
