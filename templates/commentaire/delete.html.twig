@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="alert alert-danger">
+        <strong>Avertissement !</strong> Vous êtes en train de supprimer le commentaire suivant :
+        <ul>
+            <li><strong>Ville de Depart : </strong> {{ commentaire.trajet.VilleDepart }}</li>
+            <li><strong>Ville darrivee : </strong>{{ commentaire.trajet.VilleArrive }}</li>
+            <li><strong>Date de depart : </strong>{{ commentaire.trajet.DateDepart|date('m/d/Y') }}</li>
+            <li><strong>Heure depart : </strong>{{ commentaire.trajet.HeureDepart|date('h:i') }}</li>
+            <li><strong>Date de publication : </strong>{{ commentaire.trajet.DateAjout|date('m/d/Y') }}</li>
+            <li><strong>commentaire : </strong>{{ (commentaire.contenu) }}</li>
+        </ul>
+    </div>
+    <div>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+        <a href="{{ path('commentaire.list') }}" class="btn btn-success" role="button">Annuler</a>
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes vous sûr ??')">
+        Supprimer
+    </button>
+    {{ form_end(form) }}
+    </div>
+{% endblock %}

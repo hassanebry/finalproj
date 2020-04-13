@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="form-group">
+        <div class="col-sm-8">
+            <h1>{{('reserver.title'|trans)}} :</h1>
+
+            {{ form_start(form, {attr: {class: 'filter'}}) }}
+            <div class="container row">
+                <div class="grid col-md-12">
+                    <div class="card" style="width: 20rem;">
+                        <div class="card-body">
+                            {{ form_widget(form) }}
+                            <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-10">
+                                    <button type="submit" class="btn btn-primary">{{('Reserver.submit'|trans)}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    {{ form_end(form) }}
+
+{% endblock %}

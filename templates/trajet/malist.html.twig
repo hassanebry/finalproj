@@ -15,7 +15,9 @@
                             <p class="card-text">{{'list.le'|trans}} {{ trajet.DateDepart|date('d:m:y') }} {{'list.prep'|trans}} {{ trajet.HeureDepart|date('h:m:i') }}</p>
                             <p class="card-text">{{'list.place'|trans}} {{ trajet.NbrePlace }}</p>
                             <h5 class="card-title text-success" style="font-weight: bold; font-size: 1.5rem;">{{'list.Prix'|trans}}: {{ trajet.prix|number_format(0, ',', ' ') }} £</h5>
-                            <a href="{{ path('reservation.create', {slug: trajet.slug}) }}" class="btn btn-primary">{{'list.Reserver'|trans}}</a>
+                            <a href = "{{ path('commentaire.create', {slug: trajet.slug}) }}">faire un commentaire</a>
+                            <a href = "{{ path('trajet.edit', {slug: trajet.slug}) }}"><button type="button" class="btn btn-primary">Editer</button></a>
+                            <a href = "{{ path('trajet.delete', {slug: trajet.slug}) }}"><button type="button" class="btn btn-danger">Supprimer</button></a>
                         </div>
                     </div>
                     <div>

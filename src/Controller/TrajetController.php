@@ -8,46 +8,56 @@ use App\Entity\TrajetSearch;
 use App\Entity\Utilisateur;
 use App\Form\TrajetSearchType;
 use App\Form\TrajetType;
+use App\Service\TrajetHistoryService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+
+
+/**
+*@Route("/{_locale}/")
+*/
 class TrajetController extends AbstractController
 {
-    /**
+    
+	
+	/**
      * Lister tous les trajet.
-     * @Route("/trajet/", name="trajet.list")
+     * @Route("trajet/", name="trajet.list")
      * @return Response
      */
-    public function list() : Response
+    public function index()
+    {
+	  return	$this->redirectToRoute('trajet.list');
+		
+    }
+
+	/**
+     * Lister tous les trajet.
+     * @Route("trajet/", name="trajet.list")
+     * @return Response
+     */
+    public function list(TrajetHistoryService $trajetHistoryService, TrajetRepository $repo) : Response
     {
 
-        $trajets = $this->getDoctrine()->getRepository(Trajet::class)->findAll();
+		$trajets = $repo->getTrajetsNonExpires();
+		dump($trajetHistoryService->getTrajets());
         return $this->render('trajet/list.html.twig', [
-        'trajets' => $trajets,
+		'trajets' => $trajets,
+		'historyTrajets' => $trajetHistoryService->getTrajets(),
         ]);
     }
 
-    /**
-     * Chercher et afficher un trajet.
-     * @Route("/trajet/{id}", name="trajet.show", requirements={"id" = "\d+"})
-     * @param Trajet $trajet
-     * @return Response
-     */
-    public function show(Trajet $trajet) : Response
-    {
-    
-        return $this->render('trajet/show.html.twig', [
-        'trajet' => $trajet,
-    ]);
-}
 
-/**
+	/**
 	* Créer un nouveau trajet.
-	* @Route("/nouveau-trajet", name="trajet.create")
+	* @Route("trajet/nouveau-trajet", name="trajet.create")
 	* @param Request $request
 	* @param EntityManagerInterface $em
 	* @return RedirectResponse|Response
@@ -70,7 +80,7 @@ class TrajetController extends AbstractController
     
     /**
 	 * Éditer un trajet.
-	 * @Route("trajet/{id}/edit", name="trajet.edit", requirements={"id" = "\d+"})
+	 * @Route("trajet/{slug}/edit", name="trajet.edit", requirements = {"slug": "[a-zA-Z]+"})
 	 * @param Request $request
 	 * @param EntityManagerInterface $em
 	 * @return RedirectResponse|Response
@@ -90,7 +100,7 @@ class TrajetController extends AbstractController
 
     /**
 	* Supprimer un trajet.
-	* @Route("trajet/{id}/delete", name="trajet.delete", requirements={"id" = "\d+"})
+	* @Route("trajet/{slug}/delete", name="trajet.delete", requirements = {"slug": "[a-zA-Z]+"})
 	* @param Request $request
 	* @param trajet $trajet
 	* @param EntityManagerInterface $em
@@ -99,7 +109,7 @@ class TrajetController extends AbstractController
 	public function delete(Request $request, Trajet $trajet, EntityManagerInterface $em) : Response
 	{
 	$form = $this->createFormBuilder()
-	->setAction($this->generateUrl('trajet.delete', ['id' => $trajet->getId()]))
+	->setAction($this->generateUrl('trajet.delete', ['slug' => $trajet->getSlug()]))
 	->getForm();
 	$form->handleRequest($request);
 	if ( ! $form->isSubmitted() || ! $form->isValid()) {
@@ -116,7 +126,7 @@ class TrajetController extends AbstractController
 
 	/**
      * Lister les trajet depuis un champs.
-     * @Route("/trajet/search", name="trajet.search")
+     * @Route("trajet/search", name="trajet.search")
      * @return Response
      */
     public function search(TrajetRepository $repository, Request $request) 
@@ -130,10 +140,35 @@ class TrajetController extends AbstractController
 		'trajets' => $trajets,
 		'form' => $form->createView()
 		]);
-
-		
-		
-		
-    }
+	}
+	
+	/**
+     * Lister les trajets d'un user.
+     * @Route("trajet/mestrajets", name="trajet.malist")
+     * @return Response
+     */
+    public function malist() : Response
+    {
+        $user = $this->getUser();
+		$trajets = $this->getDoctrine()->getRepository(Trajet::class)->findby(['utilisateur' => $user]);
+        return $this->render('trajet/malist.html.twig', [
+		'trajets' => $trajets,
+        ]);
+	}
+	
+	    /**
+     * Chercher et afficher un trajet.
+     * @Route("trajet/{slug}", name="trajet.show", requirements = {"slug": "[a-zA-Z]+"})
+     * @param Trajet $trajet
+     * @return Response
+     */
+    public function show(Trajet $trajet, TrajetHistoryService $trajetHistoryService) : Response
+    {
+		$trajetHistoryService->addTrajet($trajet);
+		dump($trajetHistoryService->getTrajets());
+        return $this->render('trajet/show.html.twig', [
+        'trajet' => $trajet,
+    ]);
+	}
 
 }

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -77,10 +78,22 @@ class Utilisateur implements UserInterface
      */
     private $email;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Reservation", mappedBy="utilisateur")
+     */
+    private $reservations;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Commentaire", mappedBy="utilisateur")
+     */
+    private $commentaires;
+
     public function __construct()
     {
         $this->trajet = new ArrayCollection();
         $this->roles = ['ROLE_USER'];
+        $this->reservations = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -144,6 +157,7 @@ class Utilisateur implements UserInterface
                 echo ("Chaque rôle doit commencer par 'ROLE_'");
             }
         }
+        
         $this->roles = $roles;
         return $this;
     }
@@ -260,4 +274,72 @@ class Utilisateur implements UserInterface
 
             return $this;
         }
+
+        public function __toString()
+    {
+        return $this->nom;
+    }
+
+        /**
+         * @return Collection|Reservation[]
+         */
+        public function getReservations(): Collection
+        {
+            return $this->reservations;
+        }
+
+        public function addReservation(Reservation $reservation): self
+        {
+            if (!$this->reservations->contains($reservation)) {
+                $this->reservations[] = $reservation;
+                $reservation->setUtilisateur($this);
+            }
+
+            return $this;
+        }
+
+        public function removeReservation(Reservation $reservation): self
+        {
+            if ($this->reservations->contains($reservation)) {
+                $this->reservations->removeElement($reservation);
+                // set the owning side to null (unless already changed)
+                if ($reservation->getUtilisateur() === $this) {
+                    $reservation->setUtilisateur(null);
+                }
+            }
+
+            return $this;
+        }
+
+        /**
+         * @return Collection|Commentaire[]
+         */
+        public function getCommentaires(): Collection
+        {
+            return $this->commentaires;
+        }
+
+        public function addCommentaire(Commentaire $commentaire): self
+        {
+            if (!$this->commentaires->contains($commentaire)) {
+                $this->commentaires[] = $commentaire;
+                $commentaire->setUtilisateur($this);
+            }
+
+            return $this;
+        }
+
+        public function removeCommentaire(Commentaire $commentaire): self
+        {
+            if ($this->commentaires->contains($commentaire)) {
+                $this->commentaires->removeElement($commentaire);
+                // set the owning side to null (unless already changed)
+                if ($commentaire->getUtilisateur() === $this) {
+                    $commentaire->setUtilisateur(null);
+                }
+            }
+
+            return $this;
+        }
+
 }

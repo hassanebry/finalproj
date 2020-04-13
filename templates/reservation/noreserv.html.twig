@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="alert alert-danger">
+        <strong>Avertissement !</strong> Reservation impossible :
+        <ul>
+            <li><strong>Le nombre de place souhaitée n'est pas disponible</li>
+            <li><strong>Merci de revoir</li>
+            
+        </ul>
+    </div>
+    <a href = "{{ path('trajet.search') }}" class="btn btn-success">Retour à la recherche</a>
+{% endblock %}
