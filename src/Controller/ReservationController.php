@@ -11,6 +11,8 @@ use App\Entity\Reservation;
 use App\Entity\Trajet;
 use App\Entity\Utilisateur;
 use App\Form\ReservationType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
 /**
@@ -24,6 +26,7 @@ class ReservationController extends AbstractController
 	* @param Request $request
 	* @param EntityManagerInterface $em
 	* @return RedirectResponse|Response
+	* @IsGranted("ROLE_USER")
 	*/
 	public function create(Trajet $trajet, Request $request, EntityManagerInterface $em) : Response
 	{
@@ -65,6 +68,7 @@ class ReservationController extends AbstractController
      * Lister les reservations d'un user.
      * @Route("mesreservations", name="reservation.list")
      * @return Response
+	 * @IsGranted("ROLE_USER")
      */
     public function list() : Response
     {
@@ -79,6 +83,7 @@ class ReservationController extends AbstractController
      * Lister les reservations d'un user.
      * @Route("mesreservations1", name="reservation1.list")
      * @return Response
+	 * @IsGranted("ROLE_USER")
      */
     public function list1() : Response
     {
@@ -95,6 +100,7 @@ class ReservationController extends AbstractController
 	 * @param Request $request
 	 * @param EntityManagerInterface $em
 	 * @return RedirectResponse|Response
+	 * @IsGranted("ROLE_USER")
 	*/
 	public function edit(Request $request, Reservation $reservation, EntityManagerInterface $em) : Response
 	{
@@ -116,6 +122,7 @@ class ReservationController extends AbstractController
 	* @param Reservation $reservation
 	* @param EntityManagerInterface $em
 	* @return Response
+	* @IsGranted("ROLE_USER")
 	*/
 	public function delete(Request $request, Reservation $reservation, EntityManagerInterface $em) : Response
 	{

@@ -10,6 +10,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Form\CommentaireType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/{_locale}/commentaire/")
@@ -21,6 +23,7 @@ class CommentaireController extends AbstractController
      * Chercher et afficher un commentaire.
      * @Route("commentaires/", name="commentaire.list")
      * @return Response
+	 * @IsGranted("ROLE_USER")
      */
     public function list(): Response
     {
@@ -37,6 +40,7 @@ class CommentaireController extends AbstractController
 	* @param Request $request
 	* @param EntityManagerInterface $em
 	* @return RedirectResponse|Response
+	* @IsGranted("ROLE_USER")
 	*/
     public function create(Trajet $trajet, Request $request, EntityManagerInterface $em): Response
 	{
@@ -66,6 +70,7 @@ class CommentaireController extends AbstractController
 	 * @param Request $request
 	 * @param EntityManagerInterface $em
 	 * @return RedirectResponse|Response
+	 * @IsGranted("ROLE_USER")
 	*/
 	public function edit(Request $request, Commentaire $commentaire, EntityManagerInterface $em) : Response
 	{
@@ -87,6 +92,7 @@ class CommentaireController extends AbstractController
 	* @param Commentaire $commentaire
 	* @param EntityManagerInterface $em
 	* @return Response
+	* @IsGranted("ROLE_USER")
 	*/
 	public function delete(Request $request, Commentaire $commentaire, EntityManagerInterface $em) : Response
 	{

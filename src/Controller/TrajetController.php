@@ -61,6 +61,7 @@ class TrajetController extends AbstractController
 	* @param Request $request
 	* @param EntityManagerInterface $em
 	* @return RedirectResponse|Response
+	* @IsGranted("ROLE_USER")
 	*/
 	public function create(Request $request, EntityManagerInterface $em) : Response
 	{
@@ -84,6 +85,7 @@ class TrajetController extends AbstractController
 	 * @param Request $request
 	 * @param EntityManagerInterface $em
 	 * @return RedirectResponse|Response
+	 * @IsGranted("ROLE_USER")
 	*/
 	public function edit(Request $request, Trajet $trajet, EntityManagerInterface $em) : Response
 	{
@@ -105,6 +107,7 @@ class TrajetController extends AbstractController
 	* @param trajet $trajet
 	* @param EntityManagerInterface $em
 	* @return Response
+	* @IsGranted("ROLE_USER")
 	*/
 	public function delete(Request $request, Trajet $trajet, EntityManagerInterface $em) : Response
 	{
@@ -146,6 +149,7 @@ class TrajetController extends AbstractController
      * Lister les trajets d'un user.
      * @Route("trajet/mestrajets", name="trajet.malist")
      * @return Response
+	 * @IsGranted("ROLE_USER")
      */
     public function malist() : Response
     {

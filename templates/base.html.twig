@@ -54,20 +54,23 @@
                 </li>
 
                 {% if is_granted('ROLE_USER') %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('trajet.malist') }}">Mes trajets</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ app.user.prenom }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ path('trajet.malist') }}">Mes trajets</a>
+                        <a class="dropdown-item" href="{{ path('reservation.list') }}">Mes reservations</a>
+                        <a class="dropdown-item" href="{{ path('commentaire.list') }}">Mes commentaires</a>
+                        <a class="dropdown-item" href="/logout">Deconnexion</a>
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('reservation.list') }}">Mes reservations</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('commentaire.list') }}">Mes commentaires</a>
-                </li>
-                {% endif %}
-
-                {% if is_granted('ROLE_USER') %}
+                {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('utilisateur_new') }}">{{'user.ins'|trans }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">{{'user.log'|trans }}</a>
                 </li>
                 {% endif %}
 
@@ -76,18 +79,6 @@
                     <a class="nav-link" href="/admin">Admistration</a>
                 </li>
                 {% endif %}
-                
-                {% if is_granted('ROLE_USER') %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Deconnexion</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">{{'user.log'|trans }}</a>
-                </li>
-                {% endif %}
-
-
                 
                 
                 {% for key,locale in locales %}
