@@ -135,6 +135,7 @@ class TrajetController extends AbstractController
     public function search(TrajetRepository $repository, Request $request) 
     {
 		$data = new TrajetSearch;
+		$data->page = $request->get('page', 1);
 		$form = $this->createForm(TrajetSearchType::class, $data);
 		$form->handleRequest($request);
 		$trajets = $repository->findSearch($data);

@@ -17,11 +17,19 @@
     {{ form_end(form) }}
 
     <div class="container row">
+        <div class="d-flex justify-content-end mb-2">
+            {{ knp_pagination_sortable(trajets, 'Prix', 't.prix')}}
+            {{ knp_pagination_sortable(trajets, 'Date', 't.date_depart')}}
+        </div>
         <div class="grid col-md-12">
             {% for trajet in trajets %}
                 {% include 'trajet/traj.html.twig' with {trajet: trajet} only %}
             {% endfor %}
         </div>
+    </div>
+
+    <div class="mt-4">
+        {{ knp_pagination_render(trajets) }}
     </div>
 
 {% endblock %}

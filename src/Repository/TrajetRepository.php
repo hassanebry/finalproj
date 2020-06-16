@@ -7,6 +7,9 @@ use App\Entity\TrajetSearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @method Trajet|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,9 +19,10 @@ use Doctrine\ORM\Query;
  */
 class TrajetRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, Trajet::class);
+        $this->paginator = $paginator;
     }
 
     /**
@@ -39,9 +43,9 @@ class TrajetRepository extends ServiceEntityRepository
 
     /**
      * recupere les trajets en lien avec une recherche
-     * @return trajet[]
+     * @return PaginationInterface
      */
-    public function findSearch(TrajetSearch $search): array
+    public function findSearch(TrajetSearch $search): PaginationInterface
     {
         $query = $this
                 ->createQueryBuilder('t')
@@ -75,7 +79,12 @@ class TrajetRepository extends ServiceEntityRepository
                             ;
                 }
 
-        return $query->getQuery()->getResult();
+        $query = $query->getQuery();
+        return $this->paginator->paginate(
+            $query, 
+            $search->page,
+            6
+        );
     }
 
     /**

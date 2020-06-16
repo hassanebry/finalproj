@@ -4,6 +4,11 @@ namespace App\Entity;
 
 class TrajetSearch{
     /**
+     * @var int
+     */
+    public $page = 1;
+
+    /**
      * @var string|null
      */
     private $depart;
